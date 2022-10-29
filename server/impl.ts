@@ -59,13 +59,22 @@ export class Impl implements Methods<InternalState> {
     return Response.ok();
   }
   setDirection(state: InternalState, userId: UserId, ctx: Context, request: ISetDirectionRequest): Response {
-    console.log("player moved");
-    const player = state.players.find((player) => player.id === userId);
-    if (player === undefined) {
-      return Response.error("Not joined");
+    try {
+      console.log("player moved");
+      if (request.direction.horizontal == XDirection.LEFT) {
+        console.log("simulate crash");
+        // throw "died";
+      }
+      const player = state.players.find((player) => player.id === userId);
+      if (player === undefined) {
+        return Response.error("Not joined");
+      }
+      player.direction = request.direction;
+      return Response.ok();
+    } catch (ex) {
+      console.log("catched " + ex);
+      return Response.error("crashed");
     }
-    player.direction = request.direction;
-    return Response.ok();
   }
   getUserState(state: InternalState, userId: UserId): GameState {
     return {
