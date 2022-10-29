@@ -59,6 +59,7 @@ export class Impl implements Methods<InternalState> {
     return Response.ok();
   }
   setDirection(state: InternalState, userId: UserId, ctx: Context, request: ISetDirectionRequest): Response {
+    console.log("player moved");
     const player = state.players.find((player) => player.id === userId);
     if (player === undefined) {
       return Response.error("Not joined");
